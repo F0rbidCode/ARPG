@@ -104,11 +104,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2685d18a-5430-47ce-8069-0d0388ffca76"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""5e3b66b1-041e-486c-b715-e21203e1041f"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Keyboard & Mouse"",
+                    ""groups"": ""GamePad/onScreen"",
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -129,6 +129,27 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""devicePath"": ""<Mouse>"",
                     ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""GamePad/onScreen"",
+            ""bindingGroup"": ""GamePad/onScreen"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Touchscreen>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]
@@ -257,6 +278,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard & Mouse");
             return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
+        }
+    }
+    private int m_GamePadonScreenSchemeIndex = -1;
+    public InputControlScheme GamePadonScreenScheme
+    {
+        get
+        {
+            if (m_GamePadonScreenSchemeIndex == -1) m_GamePadonScreenSchemeIndex = asset.FindControlSchemeIndex("GamePad/onScreen");
+            return asset.controlSchemes[m_GamePadonScreenSchemeIndex];
         }
     }
     public interface ILandActions
