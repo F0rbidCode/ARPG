@@ -105,7 +105,8 @@ public class PlayerActor : MonoBehaviour
             }
         }
 
-        Vector3 fire_direction = GetFireDirection(); //get the direction we want to fire in
+        //Vector3 fire_direction = GetFireDirection(); //get the direction we want to fire in
+        Vector3 fire_direction = move_direction; //get the direction we want to fire in (in this case same direction as travel)
         transform.forward = fire_direction; //rotate the player to face that direction
 
         //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
@@ -142,11 +143,12 @@ public class PlayerActor : MonoBehaviour
         if (Mana > ManaConsumption) //check if the player has enough mana
         {
             Mana -= ManaConsumption; //reduce the players mana by the mana consumtion
-            Vector3 fire_direction = GetFireDirection(); //determin fire direction
-            Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
+            //Vector3 fire_direction = GetFireDirection(); //determin fire direction
+            //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
+            Vector3 spawnLocation = this.transform.position + this.transform.forward; //get the spawn location to be infront of the player
 
 
-            GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(fire_direction)) as GameObject;//spawn the projectile
+            GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
         }
 
     } 
