@@ -53,6 +53,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""49310741-43e4-4901-b87b-4e802f462bc6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -154,6 +163,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""MeleAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4b348fc5-ccfe-4401-87b8-de2c900b0e23"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad/onScreen"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30ca1b02-fb67-424b-9247-61e206f05b47"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -203,6 +234,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Land_Move = m_Land.FindAction("Move", throwIfNotFound: true);
         m_Land_RangedAttack = m_Land.FindAction("RangedAttack", throwIfNotFound: true);
         m_Land_MeleAttack = m_Land.FindAction("MeleAttack", throwIfNotFound: true);
+        m_Land_Dodge = m_Land.FindAction("Dodge", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -267,6 +299,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_Move;
     private readonly InputAction m_Land_RangedAttack;
     private readonly InputAction m_Land_MeleAttack;
+    private readonly InputAction m_Land_Dodge;
     public struct LandActions
     {
         private @PlayerInput m_Wrapper;
@@ -274,6 +307,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Land_Move;
         public InputAction @RangedAttack => m_Wrapper.m_Land_RangedAttack;
         public InputAction @MeleAttack => m_Wrapper.m_Land_MeleAttack;
+        public InputAction @Dodge => m_Wrapper.m_Land_Dodge;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -292,6 +326,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MeleAttack.started += instance.OnMeleAttack;
             @MeleAttack.performed += instance.OnMeleAttack;
             @MeleAttack.canceled += instance.OnMeleAttack;
+            @Dodge.started += instance.OnDodge;
+            @Dodge.performed += instance.OnDodge;
+            @Dodge.canceled += instance.OnDodge;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -305,6 +342,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MeleAttack.started -= instance.OnMeleAttack;
             @MeleAttack.performed -= instance.OnMeleAttack;
             @MeleAttack.canceled -= instance.OnMeleAttack;
+            @Dodge.started -= instance.OnDodge;
+            @Dodge.performed -= instance.OnDodge;
+            @Dodge.canceled -= instance.OnDodge;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -345,5 +385,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRangedAttack(InputAction.CallbackContext context);
         void OnMeleAttack(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
     }
 }

@@ -14,6 +14,7 @@ public class PlayerActor : MonoBehaviour
       private CharacterController controller;
 
     public float speed = 5.0f; //set the players movement speed
+    public float dodgeSpeed = 100f; //set the speed the player can dodge at
 
     private PlayerInput _playerInput;
     private float _playersMovementDirection;
@@ -89,7 +90,15 @@ public class PlayerActor : MonoBehaviour
 
         Vector3 move_direction = new Vector3(moveInput.x, 0, moveInput.y);
         controller.Move(move_direction * speed * Time.deltaTime);
-       
+
+        //////////////////////////////////////////////
+        ////Dodge
+        //////////////////////////////////////////////
+        if(_playerInput.Land.Dodge.WasPressedThisFrame())
+        {
+            Dodge(move_direction);
+        }
+
         ///////////////////////////////////////
         /////Attack
         //////////////////////////////////////
@@ -113,10 +122,18 @@ public class PlayerActor : MonoBehaviour
             Slash();
         }
 
+       
 
-            //Vector3 fire_direction = GetFireDirection(); //get the direction we want to fire in
+
+        //Vector3 fire_direction = GetFireDirection(); //get the direction we want to fire in
+        //check that move direction is not 0
+        if (move_direction != new Vector3(0, 0, 0))
+        {
             Vector3 fire_direction = move_direction; //get the direction we want to fire in (in this case same direction as travel)
-        transform.forward = fire_direction; //rotate the player to face that direction
+            transform.forward = fire_direction; //rotate the player to face that direction
+        }
+            
+        
 
         //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
 
@@ -180,6 +197,15 @@ public class PlayerActor : MonoBehaviour
 
 
             GameObject s = Instantiate(slash, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
+        }
+    }
+
+    void Dodge(Vector3 move_direction)
+    {
+        if (Stamina > StamConsumption)
+        {
+            Stamina -= StamConsumption;
+            controller.Move(move_direction * speed * Time.deltaTime * dodgeSpeed);
         }
     }
 
