@@ -32,7 +32,11 @@ public class ProjectileActor : MonoBehaviour
         if (hit.collider.tag == "Enemy") //check if the collision was with an enemy
         {
             Destroy(hit.collider.gameObject); //destry the collided with object
+            
         }
-        Destroy(gameObject); //destroy the projectile
+        if (hit.collider.tag != "Player")
+        {
+            Destroy(gameObject); //destroy the projectile
+        }
     }
 }

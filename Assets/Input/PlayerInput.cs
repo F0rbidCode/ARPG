@@ -37,13 +37,22 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""RangedAttack"",
                     ""type"": ""Button"",
                     ""id"": ""45ece4fe-3ef1-45d0-8c29-9c340830d833"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MeleAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b7735d5-2f70-45ab-9f0d-a2f3233e1c72"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -109,7 +118,40 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""GamePad/onScreen"",
-                    ""action"": ""Attack"",
+                    ""action"": ""RangedAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0459729-d1d4-4adb-821c-996698ed1ccd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""RangedAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbf0f1b3-7250-4d8a-a088-8dc0f4473755"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad/onScreen"",
+                    ""action"": ""MeleAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30da18e6-347b-408c-991d-8fdb53d297ba"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""MeleAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -159,7 +201,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Land
         m_Land = asset.FindActionMap("Land", throwIfNotFound: true);
         m_Land_Move = m_Land.FindAction("Move", throwIfNotFound: true);
-        m_Land_Attack = m_Land.FindAction("Attack", throwIfNotFound: true);
+        m_Land_RangedAttack = m_Land.FindAction("RangedAttack", throwIfNotFound: true);
+        m_Land_MeleAttack = m_Land.FindAction("MeleAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -222,13 +265,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Land;
     private List<ILandActions> m_LandActionsCallbackInterfaces = new List<ILandActions>();
     private readonly InputAction m_Land_Move;
-    private readonly InputAction m_Land_Attack;
+    private readonly InputAction m_Land_RangedAttack;
+    private readonly InputAction m_Land_MeleAttack;
     public struct LandActions
     {
         private @PlayerInput m_Wrapper;
         public LandActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Land_Move;
-        public InputAction @Attack => m_Wrapper.m_Land_Attack;
+        public InputAction @RangedAttack => m_Wrapper.m_Land_RangedAttack;
+        public InputAction @MeleAttack => m_Wrapper.m_Land_MeleAttack;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -241,9 +286,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
+            @RangedAttack.started += instance.OnRangedAttack;
+            @RangedAttack.performed += instance.OnRangedAttack;
+            @RangedAttack.canceled += instance.OnRangedAttack;
+            @MeleAttack.started += instance.OnMeleAttack;
+            @MeleAttack.performed += instance.OnMeleAttack;
+            @MeleAttack.canceled += instance.OnMeleAttack;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -251,9 +299,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
+            @RangedAttack.started -= instance.OnRangedAttack;
+            @RangedAttack.performed -= instance.OnRangedAttack;
+            @RangedAttack.canceled -= instance.OnRangedAttack;
+            @MeleAttack.started -= instance.OnMeleAttack;
+            @MeleAttack.performed -= instance.OnMeleAttack;
+            @MeleAttack.canceled -= instance.OnMeleAttack;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -292,6 +343,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface ILandActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnRangedAttack(InputAction.CallbackContext context);
+        void OnMeleAttack(InputAction.CallbackContext context);
     }
 }

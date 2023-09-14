@@ -15,13 +15,22 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Attack",
+                    "name": "RangedAttack",
                     "type": "Button",
                     "id": "45ece4fe-3ef1-45d0-8c29-9c340830d833",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "MeleAttack",
+                    "type": "Button",
+                    "id": "0b7735d5-2f70-45ab-9f0d-a2f3233e1c72",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -87,7 +96,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad/onScreen",
-                    "action": "Attack",
+                    "action": "RangedAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0459729-d1d4-4adb-821c-996698ed1ccd",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "RangedAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbf0f1b3-7250-4d8a-a088-8dc0f4473755",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad/onScreen",
+                    "action": "MeleAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30da18e6-347b-408c-991d-8fdb53d297ba",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard & Mouse",
+                    "action": "MeleAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
