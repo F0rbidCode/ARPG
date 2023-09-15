@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 public class PlayerActor : MonoBehaviour
 {
     //initialise the player controller variable
-      private CharacterController controller;
+    private CharacterController controller;
 
     public float speed = 5.0f; //set the players movement speed
     public float dodgeSpeed = 100f; //set the speed the player can dodge at
@@ -19,10 +19,13 @@ public class PlayerActor : MonoBehaviour
     private PlayerInput _playerInput;
     private float _playersMovementDirection;
 
+    
+
 
     /////////////////////////////////////////////////
     ///Player Stats
     /////////////////////////////////////////////////
+    [Header ("player stats")]
     public float Health = 100;   
     public float Stamina = 100;   
     public float Mana = 100;
@@ -32,11 +35,12 @@ public class PlayerActor : MonoBehaviour
 
     //public float projectileSpeed;
 
+    
     public enum SpellType //set and switch between the available weapons 
     {
         SPELL_FIREBALL,
     }
-
+    [Header("player Skills")]
     public SpellType spell_type; //used to select weapon type
 
     public float ManaConsumption = 5;
@@ -45,9 +49,11 @@ public class PlayerActor : MonoBehaviour
     public float ManaRegenRate = 1;
     public float StamRegenRate = 2;
 
+    [Header("Game Objects")]
     public GameObject projectile; //referance to the projectile prefab
     public GameObject slash; //referance to the slash prefab
     public CameraActor camera_actor; //referance to the game camera
+    public GameObject menu; //referance to the menu game object
 
     private void Awake()
     {
@@ -81,7 +87,7 @@ public class PlayerActor : MonoBehaviour
     //}
 
     // Update is called once per frame
-    void Update()   
+    void Update()
     {
         /////////////////////////////////////////
         ////Player Movement
@@ -94,7 +100,7 @@ public class PlayerActor : MonoBehaviour
         //////////////////////////////////////////////
         ////Dodge
         //////////////////////////////////////////////
-        if(_playerInput.Land.Dodge.WasPressedThisFrame())
+        if (_playerInput.Land.Dodge.WasPressedThisFrame())
         {
             Dodge(move_direction);
         }
@@ -104,7 +110,7 @@ public class PlayerActor : MonoBehaviour
         //////////////////////////////////////
         if (_playerInput.Land.RangedAttack.WasPressedThisFrame())
         {
-            switch(spell_type)
+            switch (spell_type)
             {
                 //case spellType.WAPON_HITSCAN:
                 //    FireHitscan();
@@ -122,7 +128,7 @@ public class PlayerActor : MonoBehaviour
             Slash();
         }
 
-       
+
 
 
         //Vector3 fire_direction = GetFireDirection(); //get the direction we want to fire in
@@ -132,8 +138,8 @@ public class PlayerActor : MonoBehaviour
             Vector3 fire_direction = move_direction; //get the direction we want to fire in (in this case same direction as travel)
             transform.forward = fire_direction; //rotate the player to face that direction
         }
-            
-        
+
+
 
         //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
 
@@ -145,6 +151,15 @@ public class PlayerActor : MonoBehaviour
         //////////////////////////////////////////////////
         Mana += ManaRegenRate * Time.deltaTime;
         Stamina += StamRegenRate * Time.deltaTime;
+
+
+        ///////////////////////////////////////////////////////
+        ///////MENU
+        ////////////////////////////////////////////////////////
+        if (_playerInput.Land.Menu.WasPressedThisFrame()) //if the menu button gets pressed this frame
+        {
+            menu.SetActive(!menu.activeSelf); //toggle the menue
+        }
     }
 
 

@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""93241edc-41f1-4384-9d0a-edc919108bcc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -116,6 +125,61 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Joystick"",
+                    ""id"": ""8b3d05b4-a360-4cae-8fcb-d42d79f671f8"",
+                    ""path"": ""2DVector(mode=2)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""829225f8-0569-463a-ba8a-cdc72cbc37b9"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""6e7e232b-627e-40e1-af54-dc7365954fd3"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""5fde66da-b2e3-42c0-963c-60eb0b8b029d"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""61b53c01-2a51-456c-adfa-48ffb1798320"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -185,6 +249,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47fd6381-9a9f-41da-92af-c2772db3f3b4"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""GamePad/onScreen"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""af539df1-3018-47ba-b723-484d2ca72e37"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard & Mouse"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -235,6 +321,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Land_RangedAttack = m_Land.FindAction("RangedAttack", throwIfNotFound: true);
         m_Land_MeleAttack = m_Land.FindAction("MeleAttack", throwIfNotFound: true);
         m_Land_Dodge = m_Land.FindAction("Dodge", throwIfNotFound: true);
+        m_Land_Menu = m_Land.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -300,6 +387,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Land_RangedAttack;
     private readonly InputAction m_Land_MeleAttack;
     private readonly InputAction m_Land_Dodge;
+    private readonly InputAction m_Land_Menu;
     public struct LandActions
     {
         private @PlayerInput m_Wrapper;
@@ -308,6 +396,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @RangedAttack => m_Wrapper.m_Land_RangedAttack;
         public InputAction @MeleAttack => m_Wrapper.m_Land_MeleAttack;
         public InputAction @Dodge => m_Wrapper.m_Land_Dodge;
+        public InputAction @Menu => m_Wrapper.m_Land_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -329,6 +418,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dodge.started += instance.OnDodge;
             @Dodge.performed += instance.OnDodge;
             @Dodge.canceled += instance.OnDodge;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -345,6 +437,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dodge.started -= instance.OnDodge;
             @Dodge.performed -= instance.OnDodge;
             @Dodge.canceled -= instance.OnDodge;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -386,5 +481,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRangedAttack(InputAction.CallbackContext context);
         void OnMeleAttack(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

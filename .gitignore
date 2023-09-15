@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 # GUI PRO ICON Assets
 /[Aa]ssets/[Ll]ayer [Ll]ab
+
+#LargeFiles
+/[Aa]ssets/[Ii]mages/[Bb]ackground.tif
