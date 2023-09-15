@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -159,6 +158,12 @@ public class PlayerActor : MonoBehaviour
         if (_playerInput.Land.Menu.WasPressedThisFrame()) //if the menu button gets pressed this frame
         {
             menu.SetActive(!menu.activeSelf); //toggle the menue
+        }
+
+        string[] words = _playerInput.ToString().Split('/');
+        if (words[0] == "Keyboard" )
+        {
+            Debug.Log("Keyboard");
         }
     }
 
