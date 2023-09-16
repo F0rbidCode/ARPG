@@ -13,7 +13,7 @@ public class PlayerActor : MonoBehaviour
     private CharacterController controller;
 
     public float speed = 5.0f; //set the players movement speed
-    public float dodgeSpeed = 100f; //set the speed the player can dodge at
+    public float dodgeSpeed = 10f; //set the speed the player can dodge at
 
     private PlayerInput _playerInput;
     private float _playersMovementDirection;
@@ -56,6 +56,8 @@ public class PlayerActor : MonoBehaviour
 
     private void Awake()
     {
+        Time.timeScale = 1.0f; //set time scale to 1 so that game will restart on load after game over
+
         //get the chacter controller from the object in the scene
         controller = gameObject.GetComponent<CharacterController>();
         //get player Input controller
@@ -148,8 +150,15 @@ public class PlayerActor : MonoBehaviour
         //////////////////////////////////////////////////
         ///REGEN MANA AND STAMINA
         //////////////////////////////////////////////////
-        Mana += ManaRegenRate * Time.deltaTime;
-        Stamina += StamRegenRate * Time.deltaTime;
+        if(Mana < 100) //check if mana is less then 100%
+        {
+            Mana += ManaRegenRate * Time.deltaTime;
+        }
+       if (Stamina < 100) //check if stamina is less then 100%
+        {
+            Stamina += StamRegenRate * Time.deltaTime;
+        }
+        
 
 
         ///////////////////////////////////////////////////////
@@ -158,12 +167,6 @@ public class PlayerActor : MonoBehaviour
         if (_playerInput.Land.Menu.WasPressedThisFrame()) //if the menu button gets pressed this frame
         {
             menu.SetActive(!menu.activeSelf); //toggle the menue
-        }
-
-        string[] words = _playerInput.ToString().Split('/');
-        if (words[0] == "Keyboard" )
-        {
-            Debug.Log("Keyboard");
         }
     }
 
@@ -246,5 +249,16 @@ public class PlayerActor : MonoBehaviour
                     Destroy(info.collider.gameObject); //destroy the target
             }
         
+    }
+
+    public void onPlayerDamaged() //gets called by the enemyactor script when the player is damaged
+    {
+        Debug.Log("player Damaged");
+        if(Health <= 0) //check if the player should die
+        {
+            Time.timeScale = 0; //pause the game
+            _playerInput.Disable(); //disable the player input
+            menu.SetActive(true); //bring up the menu
+        }
     }
 }
