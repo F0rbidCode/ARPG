@@ -54,6 +54,13 @@ public class PlayerActor : MonoBehaviour
     public CameraActor camera_actor; //referance to the game camera
     public GameObject menu; //referance to the menu game object
 
+
+    //////////////////////////////////
+    ///FOR ANIMATION
+    //////////////////////////////////
+    private Animator animator; //stre a referance to the animator componant
+
+
     private void Awake()
     {
         Time.timeScale = 1.0f; //set time scale to 1 so that game will restart on load after game over
@@ -62,6 +69,8 @@ public class PlayerActor : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
         //get player Input controller
         _playerInput = new PlayerInput();
+
+        animator = GetComponent<Animator>(); //get the animator comonant
         
     }
 
@@ -93,10 +102,15 @@ public class PlayerActor : MonoBehaviour
         /////////////////////////////////////////
         ////Player Movement
         ////////////////////////////////////////
+        
         Vector2 moveInput = _playerInput.Land.Move.ReadValue<Vector2>();
 
         Vector3 move_direction = new Vector3(moveInput.x, 0, moveInput.y);
-        controller.Move(move_direction * speed * Time.deltaTime);
+        controller.Move((move_direction * speed * Time.deltaTime) * Time.deltaTime) ;
+
+      
+       
+        
 
         //////////////////////////////////////////////
         ////Dodge
@@ -138,6 +152,11 @@ public class PlayerActor : MonoBehaviour
         {
             Vector3 fire_direction = move_direction; //get the direction we want to fire in (in this case same direction as travel)
             transform.forward = fire_direction; //rotate the player to face that direction
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
         }
 
 
@@ -213,6 +232,7 @@ public class PlayerActor : MonoBehaviour
     {
         if (Stamina > StamConsumption) //check if the player has enough mana
         {
+            animator.SetTrigger("isSlashing"); //trigger the slashing animation
             Stamina -= StamConsumption; //reduce the players mana by the mana consumtion
             //Vector3 fire_direction = GetFireDirection(); //determin fire direction
             //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
@@ -220,16 +240,20 @@ public class PlayerActor : MonoBehaviour
 
 
             GameObject s = Instantiate(slash, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
+            
         }
     }
 
     void Dodge(Vector3 move_direction)
     {
+        animator.SetTrigger("isRolling"); //trigger the roll animation
         if (Stamina > StamConsumption)
         {
             Stamina -= StamConsumption;
             controller.Move(move_direction * speed * Time.deltaTime * dodgeSpeed);
         }
+        //animator.SetBool("isRolling", false);
+
     }
 
 
