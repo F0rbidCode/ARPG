@@ -217,16 +217,7 @@ public class PlayerActor : MonoBehaviour
 
     void FireBall()
     {
-        if (Mana > ManaConsumption) //check if the player has enough mana
-        {
-            Mana -= ManaConsumption; //reduce the players mana by the mana consumtion
-            //Vector3 fire_direction = GetFireDirection(); //determin fire direction
-            //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
-            Vector3 spawnLocation = this.transform.position + this.transform.forward; //get the spawn location to be infront of the player
-
-
-            GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
-        }
+        animator.SetTrigger("isCasting"); //trigger the casting animation
 
     } 
 
@@ -285,6 +276,20 @@ public class PlayerActor : MonoBehaviour
             Time.timeScale = 0; //pause the game
             _playerInput.Disable(); //disable the player input
             menu.SetActive(true); //bring up the menu
+        }
+    }
+
+    public void Cast()
+    {
+        if (Mana > ManaConsumption) //check if the player has enough mana
+        {
+            Mana -= ManaConsumption; //reduce the players mana by the mana consumtion
+            //Vector3 fire_direction = GetFireDirection(); //determin fire direction
+            //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
+            Vector3 spawnLocation = this.transform.position + this.transform.forward; //get the spawn location to be infront of the player
+
+
+            GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
         }
     }
 }
