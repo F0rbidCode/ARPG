@@ -108,9 +108,13 @@ public class PlayerActor : MonoBehaviour
         Vector3 move_direction = new Vector3(moveInput.x, 0, moveInput.y);
         controller.Move((move_direction * speed * Time.deltaTime) * Time.deltaTime) ;
 
-      
-       
-        
+        //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
+
+        camera_actor.offset = move_direction * speed;//set camera offset to move direction
+
+
+
+
 
         //////////////////////////////////////////////
         ////Dodge
@@ -161,9 +165,7 @@ public class PlayerActor : MonoBehaviour
 
 
 
-        //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
-
-        camera_actor.offset = move_direction * speed;//set camera offset to move direction
+       
 
 
         //////////////////////////////////////////////////
