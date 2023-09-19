@@ -36,6 +36,7 @@ public class ProjectileActor : MonoBehaviour
         }
         if (hit.collider.tag != "Player")
         {
+            GetComponent<AudioSource>().Stop(); //Stop the audio when object is destroid
             Destroy(gameObject); //destroy the projectile
         }
     }
