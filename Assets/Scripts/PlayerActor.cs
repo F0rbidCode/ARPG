@@ -55,6 +55,9 @@ public class PlayerActor : MonoBehaviour
     public GameObject menu; //referance to the menu game object
 
 
+    private Vector3 move_direction;
+
+
     //////////////////////////////////
     ///FOR ANIMATION
     //////////////////////////////////
@@ -105,7 +108,7 @@ public class PlayerActor : MonoBehaviour
         
         Vector2 moveInput = _playerInput.Land.Move.ReadValue<Vector2>();
 
-        Vector3 move_direction = new Vector3(moveInput.x, 0, moveInput.y);
+        move_direction = new Vector3(moveInput.x, 0, moveInput.y);
         controller.Move((move_direction * speed * Time.deltaTime) * Time.deltaTime) ;
 
         //camera_actor.offset = fire_direction; //set the camera offset to the fire direction
@@ -121,7 +124,9 @@ public class PlayerActor : MonoBehaviour
         //////////////////////////////////////////////
         if (_playerInput.Land.Dodge.WasPressedThisFrame())
         {
-            Dodge(move_direction);
+            animator.SetTrigger("isRolling"); //trigger the roll animation
+           // Debug.Log("willRoll");
+            //Dodge(move_direction);
         }
 
         ///////////////////////////////////////
@@ -237,16 +242,15 @@ public class PlayerActor : MonoBehaviour
         }
     }
 
-    void Dodge(Vector3 move_direction)
+    public void Dodge()
     {
-        animator.SetTrigger("isRolling"); //trigger the roll animation
+        //Debug.Log("isRolling");
         if (Stamina > StamConsumption)
         {
             Stamina -= StamConsumption;
             controller.Move(move_direction * speed * Time.deltaTime * dodgeSpeed);
         }
         //animator.SetBool("isRolling", false);
-
     }
 
 
@@ -270,7 +274,7 @@ public class PlayerActor : MonoBehaviour
 
     public void onPlayerDamaged() //gets called by the enemyactor script when the player is damaged
     {
-        Debug.Log("player Damaged");
+        //Debug.Log("player Damaged");
         if(Health <= 0) //check if the player should die
         {
             Time.timeScale = 0; //pause the game
@@ -291,5 +295,5 @@ public class PlayerActor : MonoBehaviour
 
             GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;//spawn the projectile
         }
-    }
+    }   
 }

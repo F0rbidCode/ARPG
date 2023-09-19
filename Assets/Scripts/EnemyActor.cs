@@ -34,7 +34,7 @@ public class EnemyActor : MonoBehaviour
         if (hit.collider.tag == "Player") //check if the collision was with the player
         {
             player.Health -= Damage; //reduve the players health be the enemy damage
-            Debug.Log("player took damage");
+           // Debug.Log("player took damage");
             player.onPlayerDamaged();
         }
     }
