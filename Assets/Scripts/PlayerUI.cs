@@ -30,6 +30,10 @@ public class PlayerUI : MonoBehaviour
     ///used to format the Exp counter
     public string formatExp = "0000";
 
+    ///used to store and update kill count information
+    public TMP_Text kills;
+    ///used to format the kill counter
+    public string formatkills = "0000";
 
     // Start is called before the first frame update
     //void Start()
@@ -47,7 +51,7 @@ public class PlayerUI : MonoBehaviour
     //    //expControler.inputField.onValueChanged.AddListener(OnExpValueChanged);
     //}
 
-    
+
     /// Update is called once per frame    
     void Update()
     {
@@ -57,6 +61,9 @@ public class PlayerUI : MonoBehaviour
         stamSlider.value = player.Stamina;
         ///update the mana slider with the players mana variable
         manaSlider.value = player.Mana;
+
+        ///set the Ui text to display the kill count
+        kills.SetText(player.killCount.ToString());
 
     }
 

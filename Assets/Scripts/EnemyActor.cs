@@ -28,6 +28,10 @@ public class EnemyActor : MonoBehaviour
     ///store a referance to the animator componant
     private Animator animator;
 
+    private void OnDestroy()
+    {
+        player.killCount += 1;
+    }
 
     /// Start is called before the first frame update
     void Start()

@@ -39,6 +39,10 @@ public class PlayerActor : MonoBehaviour
     ///stores the players mana
     public float Mana = 100;
 
+    [HideInInspector]
+    ///stores the players current kill count
+    public int killCount = 0;
+
     ///stores the players level
     public int Level = 1;
     ///stores the players experiance points
@@ -294,14 +298,14 @@ public class PlayerActor : MonoBehaviour
     ///Slash attack
     public void Slash()
     {
-        Debug.Log("slash");
-            //Vector3 fire_direction = GetFireDirection(); //determin fire direction
-            //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
-            ///get the spawn location to be infront of the player
-            Vector3 spawnLocation = spawnPoint.transform.position + this.transform.forward;
+        //Debug.Log("slash");
+        //Vector3 fire_direction = GetFireDirection(); //determin fire direction
+        //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
+        ///get the spawn location to be infront of the player
+        Vector3 spawnLocation = spawnPoint.transform.position + this.transform.forward;
 
-            ///spawn the projectile
-            GameObject s = Instantiate(slash, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;
+        ///spawn the projectile
+        GameObject s = Instantiate(slash, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;
             
         
     }
