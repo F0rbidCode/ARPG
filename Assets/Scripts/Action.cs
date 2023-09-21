@@ -7,13 +7,19 @@ using UnityEngine.InputSystem.XR;
 using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "ActionItem", menuName = "GUI/ActionItem", order = 1)] //add the scriptable object to the asset menue
+///Scriptable Object to hold pre defined Actions
+///
+///This scriptable object holds information about each action that is created in the unity editor
 public class Action : ScriptableObject
 {
-    public string actionname; //set name of action
-    public string actionDescription; //set description for action
-
-    public Sprite icon; // set actions icon
-    public Color color = Color.white; //set actions colour
+    ///set name of action
+    public string actionname;
+    ///set description for action
+    public string actionDescription;
+    /// set actions icon
+    public Sprite icon;
+    ///set actions colour
+    public Color color = Color.white; 
 }
 
     
