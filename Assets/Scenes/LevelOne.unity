@@ -1532,7 +1532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44779a5eb144be64fad615824e563591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy_prefab: {fileID: 2536551888449003976, guid: 5a547ba1b70307c4eb54810728c1980b, type: 3}
+  enemy_prefab: {fileID: 1253086935255656, guid: 19977e14c275b8346bbb6de5d0e5c30e, type: 3}
   spawn_time: 5
   spawn_radius: 10
 --- !u!4 &1301000986

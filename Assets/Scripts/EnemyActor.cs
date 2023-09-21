@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 /// Controls the Enemy actors
 /// 
@@ -18,23 +19,48 @@ public class EnemyActor : MonoBehaviour
     ///Stores the vector to the target (player)
     private Vector3 toTarget;
 
+    ///used to control enemy movement
+    private bool canMove = true;
+
+    //////////////////////////////////
+    ///FOR ANIMATION
+    //////////////////////////////////
+    ///store a referance to the animator componant
+    private Animator animator;
+
+
     /// Start is called before the first frame update
     void Start()
     {
         ///find the player actor in scene and set it as a referance to the variable
         player = GameObject.FindObjectOfType<PlayerActor>();
+
+        ///get the animator comonant
+        animator = GetComponent<Animator>();
     }
 
     /// Update is called once per frame
     void Update()
-    {
-        ///calculate the vector to the player
-        toTarget = player.transform.position - this.transform.position;
-        ///normalise that vector
-        toTarget = toTarget.normalized;
-        ///move the enemy towards the target
-        this.transform.position += toTarget * Speed * Time.deltaTime;       
-                
+    {        
+        if (canMove)
+        {
+            ///calculate the vector to the player
+            toTarget = player.transform.position - this.transform.position;
+            ///normalise that vector
+            toTarget = toTarget.normalized;
+            ///rotate the enemy to face the player
+            this.transform.forward = toTarget;
+            ///move the enemy towards the target
+            this.transform.position += toTarget * Speed * Time.deltaTime;
+            /// Set the IsWalking bool to true to start the walkign animation
+            animator.SetBool("isWalking", true);
+        }
+        //else
+        //{
+        //    ///move the enemy towards the target
+        //    this.transform.position -= toTarget * Speed * Time.deltaTime;
+        //}
+
     }
 
     /// detect collisions
@@ -43,14 +69,57 @@ public class EnemyActor : MonoBehaviour
     /// <param name="Collision hit"></param>
     private void OnCollisionEnter(Collision hit)
     {
+        this.transform.position -= toTarget * Speed * Time.deltaTime;
         ///check if the collision was with the player
         if (hit.collider.tag == "Player") 
         {
-            ///reduce the players health be the enemy damage
-            player.Health -= Damage; 
-           // Debug.Log("player took damage");
-           ///Call the PlayerActor::onPlayerDamaged() function
-            player.onPlayerDamaged();
+            ///stop the enemy moving
+            canMove = false;
+           
+            /// Set the IsWalking bool to true to start the walkign animation
+            animator.SetBool("isWalking", false);
+
+            ///trigger the attacking animation
+            animator.SetTrigger("isAttacking");
+           
         }
+    }
+
+    private void OnCollisionStay(Collision hit)
+    {
+        ///check if the collision was with the player
+        if (hit.collider.tag == "Player")
+        {
+            ///stop the enemy moving
+            canMove = false;
+
+            /// Set the IsWalking bool to true to start the walkign animation
+            animator.SetBool("isWalking", false);
+
+            ///trigger the attacking animation
+            animator.SetTrigger("isAttacking");
+           
+        }
+    }
+
+    ///used to enable movement when collision ended
+    private void OnCollisionExit(Collision hit)
+    {
+        ///check if the collision that ended was with the player
+        if (hit.collider.tag == "Player")
+        {
+            ///enable movement
+            canMove = true;
+        }
+        
+    }
+
+    private void DoDamage()
+    {
+        ///reduce the players health be the enemy damage
+        player.Health -= Damage;
+        // Debug.Log("player took damage");
+        ///Call the PlayerActor::onPlayerDamaged() function
+        player.onPlayerDamaged();
     }
 }
