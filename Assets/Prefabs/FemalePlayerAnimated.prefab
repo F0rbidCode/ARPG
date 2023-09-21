@@ -1158,6 +1158,7 @@ GameObject:
   - component: {fileID: 8927015156449181117}
   - component: {fileID: 8927015156449181119}
   - component: {fileID: 8927015156449181116}
+  - component: {fileID: 6871893737657666214}
   m_Layer: 0
   m_Name: FemalePlayerAnimated
   m_TagString: Player
@@ -1324,6 +1325,19 @@ MonoBehaviour:
   slash: {fileID: 6888292192471249341, guid: ef587b1288b52ee49914b1ef5a1c5c1f, type: 3}
   camera_actor: {fileID: 0}
   menu: {fileID: 0}
+--- !u!65 &6871893737657666214
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8927715410982120117}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.76, y: 1.21, z: 1.36}
+  m_Center: {x: 0, y: -0.12, z: 0}
 --- !u!1 &8927716445210351957
 GameObject:
   m_ObjectHideFlags: 0

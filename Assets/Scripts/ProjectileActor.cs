@@ -42,17 +42,17 @@ public class ProjectileActor : MonoBehaviour
     /// 
     /// Gets called when a collision is dectected, checks if the collided object is an enemy then destroys that object
     /// <param name="Collision hit"></param>
-    private void OnCollisionEnter(Collision hit)
+    private void OnTriggerEnter(Collider hit)
     {
         ///check if the collision was with an enemy
-        if (hit.collider.tag == "Enemy") 
+        if (hit.tag == "Enemy") 
         {
             ///destry the collided with object
-            Destroy(hit.collider.gameObject); 
+            Destroy(hit.gameObject); 
             
         }
         ///check if the collided with object was NOT the player
-        if (hit.collider.tag != "Player")
+        if (hit.tag != "Player")
         {
             ///Check if the object had a audio component
             if(GetComponent<AudioSource>())

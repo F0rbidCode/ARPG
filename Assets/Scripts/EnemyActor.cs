@@ -61,34 +61,18 @@ public class EnemyActor : MonoBehaviour
         //    this.transform.position -= toTarget * Speed * Time.deltaTime;
         //}
 
-    }
+    }   
+
 
     /// detect collisions
     /// 
     /// Check if the enemy has made a collision with the player and deal the apporpiate amount of damage
     /// <param name="Collision hit"></param>
-    private void OnCollisionEnter(Collision hit)
+    private void OnTriggernEnter(Collider hit)
     {
-        this.transform.position -= toTarget * Speed * Time.deltaTime;
+        //this.transform.position -= toTarget * Speed * Time.deltaTime;
         ///check if the collision was with the player
-        if (hit.collider.tag == "Player") 
-        {
-            ///stop the enemy moving
-            canMove = false;
-           
-            /// Set the IsWalking bool to true to start the walkign animation
-            animator.SetBool("isWalking", false);
-
-            ///trigger the attacking animation
-            animator.SetTrigger("isAttacking");
-           
-        }
-    }
-
-    private void OnCollisionStay(Collision hit)
-    {
-        ///check if the collision was with the player
-        if (hit.collider.tag == "Player")
+        if (hit.tag == "Player")
         {
             ///stop the enemy moving
             canMove = false;
@@ -98,22 +82,50 @@ public class EnemyActor : MonoBehaviour
 
             ///trigger the attacking animation
             animator.SetTrigger("isAttacking");
-           
+
         }
+        //else if (hit.collider.tag != "Floor")
+        //{
+        //    this.transform.position -= toTarget * Speed * Time.deltaTime;
+        //}
     }
+
+    ///Repeatedly attack player if in collider
+    private void OnTriggerStay(Collider hit)
+    {
+        ///check if the collision was with the player
+        if (hit.tag == "Player")
+        {
+            ///stop the enemy moving
+            canMove = false;
+
+            /// Set the IsWalking bool to true to start the walkign animation
+            animator.SetBool("isWalking", false);
+
+            ///trigger the attacking animation
+            animator.SetTrigger("isAttacking");
+
+        }
+        //else if (hit.collider.tag != "Floor")
+        //{
+        //    this.transform.position -= toTarget * Speed * Time.deltaTime;
+        //}
+    }
+    
 
     ///used to enable movement when collision ended
-    private void OnCollisionExit(Collision hit)
+    private void OnTriggerExit(Collider hit)
     {
         ///check if the collision that ended was with the player
-        if (hit.collider.tag == "Player")
+        if (hit.tag == "Player")
         {
             ///enable movement
             canMove = true;
         }
-        
+
     }
 
+    ///Called by the Enemy attack animation to damage playerActor
     private void DoDamage()
     {
         ///reduce the players health be the enemy damage
@@ -122,4 +134,65 @@ public class EnemyActor : MonoBehaviour
         ///Call the PlayerActor::onPlayerDamaged() function
         player.onPlayerDamaged();
     }
+
+
+    /// detect collisions
+    /// 
+    /// Check if the enemy has made a collision with the player and deal the apporpiate amount of damage
+    /// <param name="Collision hit"></param>
+    //private void OnCollisionEnter(Collision hit)
+    //{
+    //    //this.transform.position -= toTarget * Speed * Time.deltaTime;
+    //    ///check if the collision was with the player
+    //    if (hit.collider.tag == "Player") 
+    //    {
+    //        ///stop the enemy moving
+    //        canMove = false;
+
+    //        /// Set the IsWalking bool to true to start the walkign animation
+    //        animator.SetBool("isWalking", false);
+
+    //        ///trigger the attacking animation
+    //        animator.SetTrigger("isAttacking");
+
+    //    }
+    //    //else if (hit.collider.tag != "Floor")
+    //    //{
+    //    //    this.transform.position -= toTarget * Speed * Time.deltaTime;
+    //    //}
+    //}
+
+    ///Repeatedly attack player if in collider
+    //private void OnCollisionStay(Collision hit)
+    //{
+    //    ///check if the collision was with the player
+    //    if (hit.collider.tag == "Player")
+    //    {
+    //        ///stop the enemy moving
+    //        canMove = false;
+
+    //        /// Set the IsWalking bool to true to start the walkign animation
+    //        animator.SetBool("isWalking", false);
+
+    //        ///trigger the attacking animation
+    //        animator.SetTrigger("isAttacking");
+
+    //    }
+    //    //else if (hit.collider.tag != "Floor")
+    //    //{
+    //    //    this.transform.position -= toTarget * Speed * Time.deltaTime;
+    //    //}
+    //}
+
+    /////used to enable movement when collision ended
+    //private void OnCollisionExit(Collision hit)
+    //{
+    //    ///check if the collision that ended was with the player
+    //    if (hit.collider.tag == "Player")
+    //    {
+    //        ///enable movement
+    //        canMove = true;
+    //    }
+
+    //}
 }

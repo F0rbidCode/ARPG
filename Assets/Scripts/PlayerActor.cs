@@ -74,7 +74,9 @@ public class PlayerActor : MonoBehaviour
     ///referance to the game camera
     public CameraActor camera_actor;
     ///referance to the menu game object
-    public GameObject menu; 
+    public GameObject menu;
+    ///referance to the spawn location of spells
+    public GameObject spawnPoint;
 
     ///stores the vector the player last moved in
     private Vector3 move_direction;
@@ -189,8 +191,16 @@ public class PlayerActor : MonoBehaviour
         ///Check if the Mele Attack button was pressed this frame
         if (_playerInput.Land.MeleAttack.WasPressedThisFrame())
         {
-            ///Call the Slash() function
-            Slash();
+            ///check if the player has enough stamina
+            if (Stamina > StamConsumption)
+            {
+                ///trigger the slashing animation
+                animator.SetTrigger("isSlashing");
+                ///reduce the players mana by the mana consumtion
+                Stamina -= StamConsumption;
+            }
+                /////Call the Slash() function
+                //Slash();
         }
 
 
@@ -282,24 +292,18 @@ public class PlayerActor : MonoBehaviour
     } 
 
     ///Slash attack
-    void Slash()
+    public void Slash()
     {
-        ///check if the player has enough mana
-        if (Stamina > StamConsumption) 
-        {
-            ///trigger the slashing animation
-            animator.SetTrigger("isSlashing");
-            ///reduce the players mana by the mana consumtion
-            Stamina -= StamConsumption;
+        Debug.Log("slash");
             //Vector3 fire_direction = GetFireDirection(); //determin fire direction
             //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
             ///get the spawn location to be infront of the player
-            Vector3 spawnLocation = this.transform.position + this.transform.forward;
+            Vector3 spawnLocation = spawnPoint.transform.position + this.transform.forward;
 
             ///spawn the projectile
             GameObject s = Instantiate(slash, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;
             
-        }
+        
     }
 
     ///Dodge roll
@@ -365,7 +369,7 @@ public class PlayerActor : MonoBehaviour
             //Vector3 fire_direction = GetFireDirection(); //determin fire direction
             //Vector3 spawnLocation = this.transform.position + fire_direction; //get the spawn location
             ///get the spawn location to be infront of the player
-            Vector3 spawnLocation = this.transform.position + this.transform.forward; 
+            Vector3 spawnLocation = spawnPoint.transform.position + this.transform.forward; 
 
             ///Instantiate a projectile at the specified location
             GameObject p = Instantiate(projectile, spawnLocation, Quaternion.LookRotation(this.transform.forward)) as GameObject;
